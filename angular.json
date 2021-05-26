@@ -24,6 +24,7 @@
               "src/assets"
             ],
             "styles": [
+              "src/custom-theme.scss",
               "src/styles.css"
             ],
             "scripts": []
@@ -119,6 +120,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "FEApiPlanC"
+    }
+  },
+  "defaultProject": "FEApiPlanC",
+  "cli": {
+    "analytics": "86647d1d-5cbe-4915-b0a9-e29e887b2b9d"
+  }
 }

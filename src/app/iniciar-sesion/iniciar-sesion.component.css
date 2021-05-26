@@ -1,0 +1,16 @@
+.contenido {
+  height: 85vh;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  display: flex;
+}
+
+.centrado {
+  text-align: center;
+  display: block;
+}
+
+mat-form-field {
+  width: 300px;
+}

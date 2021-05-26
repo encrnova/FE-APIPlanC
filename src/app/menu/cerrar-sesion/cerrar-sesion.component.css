@@ -1,0 +1,12 @@
+.mat-dialog-title {
+  text-align: center;
+}
+
+.mat-dialog-content {
+  display: contents;
+}
+
+.mat-dialog-actions {
+  text-align: center;
+  display: block;
+}
