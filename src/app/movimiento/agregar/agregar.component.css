@@ -1,0 +1,75 @@
+.mat-dialog-title {
+    text-align: center;
+  }
+  
+  .mat-dialog-content {
+    height: 310px;
+  }
+  
+  .mat-form-field {
+    width: 400px;
+  }
+  
+  .mat-dialog-actions {
+    text-align: center;
+    display: block;
+  }
+  
+  .dias {
+    display: flex;
+    align-content: center;
+    align-items: center;
+    height: 60px;
+  }
+  
+  .mat-checkbox {
+    margin-right: 35px;
+    margin-left: 15px;
+  }
+  
+  .mat-form-field {
+    margin-left: 15px;
+  }
+  
+  .hora {
+    width: 172px;
+  }
+  
+  .contenido {
+    margin-left: 15px;
+    margin-right: 15px;
+  }
+  
+  table {
+    width: 100%;
+  }
+  
+  .columnas {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .acciones {
+    width:400px !important;
+  }
+  
+  .mat-table {
+    overflow: auto;
+  }
+  
+  .mat-header-cell {
+    color: white;
+    background-color: gray;
+    font-size: 14px;
+  }
+  
+  .mat-column-eliminar {
+    width: 10%;
+  }
+  
+  @media screen and (max-width: 400px) {
+    .mat-form-field {
+      width: 220px;
+    }
+  }
+  

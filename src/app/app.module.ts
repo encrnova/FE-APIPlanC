@@ -17,6 +17,9 @@ import { MaterialModule } from './material.module';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
+import { ReporteComponent } from './reporte/reporte.component';
+import { AgregarComponent } from './movimiento/agregar/agregar.component';
+import { MovimientoComponent } from './movimiento/movimiento.component';
 
 const appRoutes: Routes = [
   { path: '', component: InicioComponent }
@@ -29,7 +32,10 @@ const appRoutes: Routes = [
     PiePaginaComponent,
     IniciarSesionComponent,
     InicioComponent,
-    CerrarSesionComponent
+    CerrarSesionComponent,
+    ReporteComponent,
+    AgregarComponent,
+    MovimientoComponent
   ],
   imports: [
     MaterialModule,

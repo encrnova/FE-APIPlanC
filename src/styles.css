@@ -1,6 +1,97 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
 
 
+/* Material */
+
+/* @import '~@angular/material/prebuilt-themes/deeppurple-amber.css'; */
+@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
+@import '~ng-pick-datetime/assets/style/picker.min.css';
+
+body {
+  font-family: Roboto, Arial, sans-serif;
+  margin: 0;
+  /* overflow-y:hidden!important; */
+}
+
+.basic-container {
+  padding: 5px;
+}
+
+.version-info {
+  font-size: 8pt;
+  float: right;
+}
+
+.btnPrincipal {
+  background-color: #00618b;
+  color: white;
+  text-align: center;
+}
+
+.btnSecundario {
+  background-color: forestgreen;
+  color: white;
+}
+
+.btnCancelar {
+  background-color: gray;
+  color: white;
+}
+
+.titulo {
+  text-align: center;
+  font-weight: bold;
+  color: #00618b;
+}
+
+button:focus {
+  outline: none;
+}
+
+button[type="submit"] {
+  background-color: #00618b;
+  color: #fff;
+}
+
+.btnCerrar {
+  float: right;
+  top:-24px;
+  right:-24px;
+}
+
+.no-resultados {
+  display: flex; 
+  justify-content: center; 
+  text-align: center; 
+  flex-direction: column; 
+  color: black; 
+  background-color: #dae3eb;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.mat-slide-toggle.mat-primary.mat-checked .mat-slide-toggle-thumb {
+  background-color: #00618b;
+}
+
+.mat-slide-toggle.mat-primary.mat-checked .mat-slide-toggle-bar {
+  background-color: #dae3eb;
+}
+
+.mat-progress-bar-fill::after {
+  background-color: #00618b;
+}
+
+.mat-progress-bar-buffer {
+  background-color: #dae3eb;
+}

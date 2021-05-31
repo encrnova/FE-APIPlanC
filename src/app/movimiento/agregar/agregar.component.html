@@ -1,0 +1,68 @@
+<button class="btnCerrar" mat-icon-button (click)="cancelar()">
+  <mat-icon>clear</mat-icon>
+</button>
+
+<h1 mat-dialog-title>Detalles del Pasajero</h1>
+
+<form class="mat-dialog-content" [formGroup]="formulario">
+  <hr>
+
+  <mat-form-field>
+    <mat-label>Documento</mat-label>
+    <input class="documento" matInput [(ngModel)]="documento" formControlName="documento" maxlength="200" required>
+    <mat-error *ngIf="formulario.controls['documento'].hasError('required')">Campo requerido</mat-error>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Nombre</mat-label>
+    <input class="nombre" matInput [(ngModel)]="nombre" formControlName="nombre" maxlength="200" required>
+    <mat-error *ngIf="formulario.controls['nombre'].hasError('required')">Campo requerido</mat-error>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Primer apellido</mat-label>
+    <input class="apellido1" matInput [(ngModel)]="apellido1" formControlName="apellido1" maxlength="100" required>
+    <mat-error *ngIf="formulario.controls['apellido1'].hasError('required')">Campo requerido</mat-error>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Segundo apellido</mat-label>
+    <input class="apellido2" matInput [(ngModel)]="apellido2" formControlName="apellido2" maxlength="100">
+    <mat-error *ngIf="formulario.controls['apellido2'].hasError('required')">Campo requerido</mat-error>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Fecha de nacimiento</mat-label>
+    <input class="fechaNac" matInput [(ngModel)]="fechaNac" formControlName="fechaNac" [max]="fechaMaxima"
+      [matDatepicker]="fechaNacimiento" (click)="fechaNacimiento.open()" placeholder="dd/mm/aaaa" required>
+    <mat-datepicker-toggle matSuffix [for]="fechaNacimiento"></mat-datepicker-toggle>
+    <mat-datepicker #fechaNacimiento startView="multi-year" [startAt]="fechaInicial"></mat-datepicker>
+    <mat-error *ngIf="formulario.controls['fechaNac'].hasError('required')">Campo requerido</mat-error>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Nacionalidad</mat-label>
+    <mat-select [(ngModel)]="nacionalidad" formControlName="nacionalidad" required>
+      <mat-option *ngFor="let pais of listaPais" [value]="pais.code">
+        {{pais.nombre}}
+      </mat-option>
+    </mat-select>
+    <mat-error *ngIf="formulario.controls['nacionalidad'].hasError('required')">Campo requerido</mat-error>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Sexo</mat-label>
+    <mat-select [(ngModel)]="sexo" formControlName="sexo" required>
+      <mat-option value=F>Femenino</mat-option>
+      <mat-option value=M>Masculino</mat-option>
+    </mat-select>
+    <mat-error *ngIf="formulario.controls['sexo'].hasError('required')">Campo requerido</mat-error>
+  </mat-form-field>
+
+  <div mat-dialog-actions>
+    <button mat-button color="primary" [disabled]="!formulario.valid" (click)="guardar()"
+      cdkFocusInitial>Agregar</button>
+    <button mat-button color="warn" (click)="cancelar()">Cancelar</button>
+  </div>
+
+</form>

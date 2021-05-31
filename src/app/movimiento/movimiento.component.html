@@ -1,0 +1,125 @@
+<div class="contenido">
+  <br />
+  <h2>Movimientos Aereos</h2>
+
+  <form [formGroup]="formulario">
+
+    <mat-form-field appearance="outline">
+      <mat-label>Fecha</mat-label>
+      <input matInput [(ngModel)]="fechaA" formControlName="fechaA" [matDatepicker]="fecha" [min]="fechaMinima"
+        (click)="fecha.open()" required>
+      <mat-datepicker-toggle matSuffix [for]="fecha"></mat-datepicker-toggle>
+      <mat-datepicker #fecha></mat-datepicker>
+      <mat-error *ngIf="formulario.controls['fechaA'].hasError('required')">Campo requerido</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Hora</mat-label>
+      <input [(ngModel)]="hora" formControlName="hora" mat-timepicker matInput type="time" value="08:00 AM" required>
+      <mat-error *ngIf="formulario.controls['hora'].hasError('required')">Campo requerido</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Puesto migratorio</mat-label>
+      <mat-select [(ngModel)]="puesto" formControlName="puesto" required>
+        <mat-option value="SJO">Aeropuerto Juan Santa Maria</mat-option>
+        <mat-option value="LIR">Aeropuerto Daniel Oduver</mat-option>
+      </mat-select>
+      <mat-error *ngIf="formulario.controls['puesto'].hasError('required')">Campo requerido</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Tipo de pasajero</mat-label>
+      <mat-select [(ngModel)]="tipo" formControlName="tipo" required>
+        <mat-option value="PAS">Pasajero</mat-option>
+        <mat-option value="TRI">Tripulante</mat-option>
+      </mat-select>
+      <mat-error *ngIf="formulario.controls['tipo'].hasError('required')">Campo requerido</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Pais de procedencia</mat-label>
+      <mat-select [(ngModel)]="pais" formControlName="pais" required>
+        <mat-option *ngFor="let pais of listaPais" [value]="pais.code">
+          {{pais.nombre}}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="formulario.controls['pais'].hasError('required')">Campo requerido</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label> Código de aeronave </mat-label>
+      <input type="text" matInput [(ngModel)]="codigo" formControlName="codigo" required>
+      <mat-error *ngIf="formulario.controls['codigo'].hasError('required')">Campo requerido</mat-error>
+    </mat-form-field>
+
+  </form>
+
+  <button mat-raised-button class="btnPrincipal btnConsultar" style="margin-right: 20px;" (click)="consultar()">
+    <!-- [disabled]="!formulario.valid" -->
+    Consultar</button>
+  <button mat-raised-button class="btnSecundario" style="margin-right: 20px;" *ngIf="mostrarTabla" (click)="agregarMovimiento()">Agregar</button>
+  <button mat-button class="btnCancelar cancelar" *ngIf="mostrarTabla" (click)="cancelar()">Cancelar</button>
+  <br /><br />
+  <div *ngIf="!hayDatos">
+    <div class="no-resultados">
+      <p style="margin: 0px;"> No hay coincidencias </p>
+    </div>
+  </div>
+
+  <div *ngIf="mostrarTabla">
+    <table mat-table [dataSource]="datos" matSort>
+
+      <ng-container matColumnDef="documento">
+        <th mat-header-cell *matHeaderCellDef> Documento </th>
+        <td mat-cell *matCellDef="let movimiento"> {{movimiento.MIC_PASAPORTE}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="nacionalidad">
+        <th mat-header-cell *matHeaderCellDef> Nacionalidad </th>
+        <td mat-cell *matCellDef="let movimiento"> {{movimiento.MIC_NOMBRE}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="fechaNac">
+        <th mat-header-cell *matHeaderCellDef> Fecha de Nacimiento </th>
+        <td mat-cell *matCellDef="let movimiento"> {{movimiento.MIC_NACIONALIDAD}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="nombre">
+        <th mat-header-cell *matHeaderCellDef> Nombre </th>
+        <td mat-cell *matCellDef="let movimiento"> {{movimiento.MIC_FECHA1}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="apellido1">
+        <th mat-header-cell *matHeaderCellDef> Primer Apellido </th>
+        <td mat-cell *matCellDef="let movimiento"> {{movimiento.MIC_CODIGO}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="apellido2">
+        <th mat-header-cell *matHeaderCellDef> Segundo Apellido </th>
+        <td mat-cell *matCellDef="let movimiento"> {{movimiento.MIC_CODIGO}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="sexo">
+        <th mat-header-cell *matHeaderCellDef> Sexo </th>
+        <td mat-cell *matCellDef="let movimiento"> {{movimiento.MIC_CODIGO}} </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="columnas" class="encabezado"></tr>
+      <tr mat-row *matRowDef="let row; columns: columnas;"></tr>
+
+      <tr class="mat-row" *matNoDataRow>
+        <td *ngIf="!cargando" class="mat-cell" colspan="7">No hay datos</td>
+        <td *ngIf="cargando" colspan="7">
+          <mat-card *ngIf="cargando" style="display: flex; justify-content: center; align-items: center">
+            <mat-progress-spinner color="primary" mode="indeterminate"></mat-progress-spinner>
+          </mat-card>
+        </td>
+      </tr>
+
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[10, 20]" [pageSize]="10" [showFirstLastButtons]="true"></mat-paginator>
+
+  </div>
+</div>

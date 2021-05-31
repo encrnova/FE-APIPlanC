@@ -1,0 +1,86 @@
+<div>
+  <br />
+  <h1 class="titulo"> Movimientos aereos </h1>
+  <hr>
+
+  <div *ngIf="!hayDatos">
+    <div class="no-resultados">No hay registros.</div>
+  </div>
+
+  <div *ngIf="hayDatos">
+    <p style="margin-left: 25px;"><b>Filtros de búsqueda</b></p>
+    <div class="divBtnPrincipal">
+      <div style="float:left">
+        <mat-form-field class="filtro" style="margin-left: 25px;">
+          <mat-label>Rango de fecha</mat-label>
+          <mat-date-range-input [formGroup]="rangoFecha" [rangePicker]="picker">
+            <input matStartDate formControlName="inicio" #rf>
+            <input matEndDate formControlName="fin">
+          </mat-date-range-input>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-date-range-picker #picker></mat-date-range-picker>
+          <mat-error *ngIf="rangoFecha.controls.inicio.hasError('matStartDateInvalid')">Fecha invalida</mat-error>
+          <mat-error *ngIf="rangoFecha.controls.fin.hasError('matEndDateInvalid')">Fecha invalida</mat-error>
+        </mat-form-field>
+
+        <button *ngIf="rf.value?.length > 0" mat-icon-button matTooltip="Cancelar filtro" matTooltipPosition="above"
+          (click)="noFecha()">
+          <mat-icon>clear</mat-icon>
+        </button>
+
+        <button mat-icon-button matTooltip="Ver por rango de fecha seleccionada" matTooltipPosition="right"
+          (click)="cargarPorFecha()">
+          <mat-icon>refresh</mat-icon>
+        </button>
+
+      </div>
+    </div>
+
+    <div class="contenido">
+      <button style="float: right" mat-raised-button class="btnPrincipal"
+        (click)="exporter.exportTable('xlsx', {fileName:'ReporteCitas'})">
+        Exportar a Excel
+      </button>
+      <br /><br />
+
+      <div class="columnas">
+        <table mat-table [dataSource]="datos" multiTemplateDataRows matTableExporter #exporter="matTableExporter">
+
+          <ng-container matColumnDef="c1">
+            <th mat-header-cell *matHeaderCellDef> Documento </th>
+            <td mat-cell *matCellDef="let cita"> {{cita.NUM_DOCUMENTO}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="c2">
+            <th mat-header-cell *matHeaderCellDef> Nacionalidad </th>
+            <td mat-cell *matCellDef="let cita"> {{cita.TIPO_CITA_NOMBRE}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="c3">
+            <th mat-header-cell *matHeaderCellDef> Fecha nacimiento </th>
+            <td mat-cell *matCellDef="let cita"> {{cita.SEDE_NOMBRE}} </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="columnas"></tr>
+          <tr mat-row *matRowDef="let element; columns: columnas;" class="example-element-row"
+            [class.example-expanded-row]="expandedElement === element">
+          </tr>
+          <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+
+          <tr class="mat-row" *matNoDataRow>
+            <td *ngIf="!cargando" class="mat-cell" colspan="8">No hay datos que coincidan</td>
+            <td *ngIf="cargando" colspan="8">
+              <mat-card *ngIf="cargando" style="display: flex; justify-content: center; align-items: center">
+                <mat-progress-spinner color="primary" mode="indeterminate"></mat-progress-spinner>
+              </mat-card>
+            </td>
+          </tr>
+
+        </table>
+
+        <mat-paginator [pageSizeOptions]="[10, 20]" [pageSize]="10" [showFirstLastButtons]="true"></mat-paginator>
+
+      </div>
+    </div>
+  </div>
+</div>

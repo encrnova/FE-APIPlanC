@@ -1,0 +1,71 @@
+.contenido {
+    text-align: center;
+    height: 80vh; 
+  }
+  
+  table {
+    width: 100%;
+  }
+  
+  .mat-table {
+    overflow: auto;
+  }
+  
+  .mat-row:nth-child(even){
+    background-color:#b6c7d7
+  }
+  
+  .mat-row:nth-child(odd){
+    background-color:#dae3eb
+  }
+  
+  .mat-header-cell {
+    color: white;
+    background-color: #00618b;
+    font-size: 14px;
+  }
+
+  .mat-column-documento,
+  .mat-column-nacionalidad,
+  .mat-column-fechaNac,
+  .mat-column-nombre,
+  .mat-column-apellido1,
+  .mat-column-apellido2 {
+    width: 10%;
+    text-align: center;
+  }
+
+  .mat-column-sexo {
+    width: 5%;
+    text-align: center;
+  }
+  
+  .no-resultados {
+    display: flex;
+    justify-content: center;
+    padding: 14px;
+    font-size: 14px;
+  }
+  
+  .mat-form-field {
+    font-size: 14px;
+    margin-left: 15px;
+  }
+  
+  .btnLimpiar {
+    bottom: 5px;
+  }
+  
+  .divBtnSecundario {
+    float: left;
+  }
+  
+  .campoNombre {
+    width: 400px;
+  }
+  
+  .btnConsultar[disabled] {
+    background-color: #00618b;
+    color: white;
+    cursor: not-allowed;
+  }
