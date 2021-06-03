@@ -95,3 +95,7 @@ button[type="submit"] {
 .mat-progress-bar-buffer {
   background-color: #dae3eb;
 }
+
+.mat-progress-spinner circle, .mat-spinner circle {
+  stroke: #00618b;
+}
