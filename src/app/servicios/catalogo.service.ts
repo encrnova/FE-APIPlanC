@@ -10,12 +10,12 @@ import { ConexionWebapiService } from './conexion-webapi.service';
 
 export class CatalogoService {
   private apiUrl = ConexionWebapiService.apiURL;
-  readonly urlPais = this.apiUrl + "/Catalogo/getNacionalidad";
+  readonly url = this.apiUrl + "/Catalogo";
 
   constructor(private http: HttpClient) { }
 
   obtenerPaises(): Observable<Pais[]> {
-    return this.http.get<Pais[]>(this.urlPais);
+    return this.http.get<Pais[]>(this.url + "/Nacionalidad");
   }
 
 }

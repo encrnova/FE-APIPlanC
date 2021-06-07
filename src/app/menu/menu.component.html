@@ -1,10 +1,26 @@
 <mat-toolbar class="encabezado" *ngIf="router.url != '/iniciarSesion' && router.url != '/'">
-  <h1 style="margin-left: 15px;"> API Plan C </h1>
-  <div class="derecha">
+
+  <div>
     <button mat-button [matMenuTriggerFor]="menu" #menuTrigger>
-      {{datosUsuario.usuarioId}} <mat-icon aria-hidden="false" aria-label="Example home icon">arrow_drop_down</mat-icon>
+      <mat-icon aria-hidden="false" aria-label="Example home icon">menu</mat-icon>
     </button>
     <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="irMovimiento()">
+        <mat-icon class="iconoSubmenu" mat-list-icon>article</mat-icon> Movimientos
+      </button>
+      <button mat-menu-item (click)="irReporte()">
+        <mat-icon class="iconoSubmenu" mat-list-icon>assessment</mat-icon> Reporte
+      </button>
+    </mat-menu>
+  </div>
+
+  <h1 style="margin-left: 15px;"> API Plan C </h1>
+
+  <div class="derecha">
+    <button mat-button [matMenuTriggerFor]="menu2" #menuTrigger>
+      {{datosUsuario.usuarioId}} <mat-icon aria-hidden="false" aria-label="Example home icon">arrow_drop_down</mat-icon>
+    </button>
+    <mat-menu #menu2="matMenu">
       <button mat-menu-item (click)="cerrarSesion()">
         <mat-icon class="iconoSubmenu" mat-list-icon>logout</mat-icon> Cerrar sesión
       </button>

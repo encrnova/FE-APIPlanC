@@ -9,8 +9,9 @@ import { Autenticacion } from 'src/app/seguridad/autenticacion';
 import { MatDatepicker } from '@angular/material/datepicker';
 import { Paginacion } from 'src/app/generales/paginacion';
 import { Time } from '@angular/common';
-import { Pais } from '../modelos/pais.model';
-import { AgregarComponent } from './agregar/agregar.component';
+import { Pais } from '../../modelos/pais.model';
+import { AgregarComponent } from '../agregar/agregar.component';
+import { CatalogoService } from 'src/app/servicios/catalogo.service';
 
 @Component({
   selector: 'movimiento',
@@ -31,7 +32,7 @@ export class MovimientoComponent implements OnInit {
   hora: Time;
   puesto: string;
   tipo: string;
-  pais: string;
+  paises: string;
   codigo: string;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -42,6 +43,7 @@ export class MovimientoComponent implements OnInit {
     private dateAdapter: DateAdapter<Date>,
     private auth: Autenticacion,
     private datosUsuario: DatosUsuario,
+    public catalogoService: CatalogoService,
     private pag: Paginacion) {
     this.pag.textoPaginacion();
   }
@@ -51,11 +53,15 @@ export class MovimientoComponent implements OnInit {
     hora: new FormControl(),
     puesto: new FormControl(),
     tipo: new FormControl(),
-    pais: new FormControl(),
+    paises: new FormControl(),
     codigo: new FormControl()
   });
 
   ngOnInit(): void {
+    this.catalogoService.obtenerPaises()
+    .subscribe(res => { 
+      this.listaPais = res;
+    });
   }
 
   consultar() {
@@ -87,10 +93,11 @@ export class MovimientoComponent implements OnInit {
     //     });
   }
 
-  agregarMovimiento() {
+  agregarMovimiento(idPuesto: number, fecha: Date, idTransporte: number, procedencia: string, tipoPasajero: string) {
     this.dialog.open(AgregarComponent, {
       width: '900px',
-      disableClose: true
+      disableClose: true,
+      data: { idPuesto: idPuesto, fecha: fecha, idTransporte: idTransporte, procedencia: procedencia, tipoPasajero: tipoPasajero }
     });
   }
 

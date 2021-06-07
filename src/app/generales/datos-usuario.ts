@@ -6,7 +6,7 @@ import { Injectable } from '@angular/core';
 
 export class DatosUsuario {
 
-  usuarioId: number = parseInt(sessionStorage.getItem('usuarioId'));
+  usuarioId: string = sessionStorage.getItem('usuarioId');
   usuarioNombre: string = sessionStorage.getItem('usuarioNombre');
 
 }

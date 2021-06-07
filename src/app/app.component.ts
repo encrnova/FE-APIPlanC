@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { Autenticacion } from './seguridad/autenticacion';
 
 @Component({
   selector: 'app-root',
@@ -7,16 +6,13 @@ import { Autenticacion } from './seguridad/autenticacion';
   styleUrls: ['./app.component.css']
 })
 
-
 export class AppComponent {
   title = 'ApiPlanC';
 
-  constructor(
-    private auth: Autenticacion) {
+  constructor() {
   }
 
   ngOnInit(): void {
-    this.auth.autenticacion();
   }
 
 }

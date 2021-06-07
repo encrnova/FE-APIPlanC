@@ -47,6 +47,7 @@ import {
   MatFormFieldDefaultOptions,
   MatFormFieldModule
 } from "@angular/material/form-field";
+import { MatTableExporterModule } from "mat-table-exporter";
 
 const appearance: MatFormFieldDefaultOptions = {
 };
@@ -95,6 +96,7 @@ const appearance: MatFormFieldDefaultOptions = {
     MatToolbarModule,
     MatTooltipModule,
     MatTreeModule,
+    MatTableExporterModule,
     OverlayModule,
     PortalModule,
     ScrollingModule

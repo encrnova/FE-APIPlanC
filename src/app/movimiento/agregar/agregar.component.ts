@@ -9,6 +9,9 @@ import { MatTableDataSource } from '@angular/material/table';
 import { DatosUsuario } from 'src/app/generales/datos-usuario';
 import { Autenticacion } from 'src/app/seguridad/autenticacion';
 import { Pais } from 'src/app/modelos/pais.model';
+import { Movimiento } from 'src/app/modelos/movimiento.model';
+import { MovimientoService } from 'src/app/servicios/movimiento.service';
+import { CatalogoService } from 'src/app/servicios/catalogo.service';
 
 @Component({
   selector: 'app-agregar',
@@ -27,13 +30,14 @@ export class AgregarComponent implements OnInit {
   fechaNac: Date;
   nacionalidad: string;
   sexo: string;
+  movimiento: Movimiento;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<AgregarComponent>,
     private datosUsuario: DatosUsuario,
-    private auth: Autenticacion
-  ) { }
+    private movService: MovimientoService,
+    public catalogoService: CatalogoService) { }
 
   formulario = new FormGroup({
     documento: new FormControl(),
@@ -46,10 +50,44 @@ export class AgregarComponent implements OnInit {
   });
 
   ngOnInit(): void {
+    this.movimiento = new Movimiento();
+    this.catalogoService.obtenerPaises()
+    .subscribe(res => { 
+      this.listaPais = res;
+    });
   }
 
-  guardar(){
-    
+  guardar() {
+    this.movimiento.TRA_MOV_DOCUMENTO = this.documento;
+    this.movimiento.NAC_ID = this.nacionalidad;
+    this.movimiento.TRA_MOV_FECHA_NACIMIENTO = this.fechaNac;
+    this.movimiento.PUE_ID_PUESTO_MIGRATORIO = this.data.idPuesto;
+    this.movimiento.TRA_MOV_FECHA_MOVIMIENTO = this.data.fecha;
+    this.movimiento.TRA_ID_TRANSPORTE = this.data.idTransporte;
+    this.movimiento.NAC_ID_DEST_PROC = this.data.procedencia;
+    this.movimiento.TRA_MOV_NOMBRE = this.nombre;
+    this.movimiento.TRA_MOV_PRIMER_APELLIDO = this.apellido1;
+    this.movimiento.TRA_MOV_SEGUNDO_APELLIDO = this.apellido2;
+    this.movimiento.TRA_MOV_SEXO = this.sexo;
+    this.movimiento.TRA_MOV_TIPO_PASAJERO = this.data.tipoPasajero;
+    console.log(this.movimiento);
+    // this.movService.insertar(this.datosUsuario.usuarioId, this.movimiento)
+    //   .subscribe(res => {
+    //     Swal.fire({
+    //       position: 'top-end',
+    //       icon: 'success',
+    //       title: 'Movimiento insertado exitosamente.',
+    //       showConfirmButton: false,
+    //       timer: 2000
+    //     });
+    //     this.dialogRef.close(null);
+    //   },
+    //     error => {
+    //       Swal.fire(
+    //         'Error',
+    //         error.error.Message,
+    //         'error')
+    //     });
   }
 
   cancelar() {

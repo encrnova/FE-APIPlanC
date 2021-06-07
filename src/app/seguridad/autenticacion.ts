@@ -1,11 +1,10 @@
-import { Component, Injectable } from "@angular/core";
+import { Injectable } from "@angular/core";
 import { UsuarioAuth } from "../modelos/usuario-auth.model";
 import { UsuarioAuthService } from "../servicios/usuario-auth.service";
-import { UsuarioService } from "../servicios/usuario.service";
 
 @Injectable({
     providedIn: 'root'
-  })
+})
 
 export class Autenticacion {
 
@@ -16,7 +15,6 @@ export class Autenticacion {
 
     ngOnInit(): void {
         this.usuarioAuth = new UsuarioAuth;
-        this.autenticacion();
     }
 
     async autenticacion() {

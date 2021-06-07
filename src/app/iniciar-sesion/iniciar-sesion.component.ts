@@ -4,8 +4,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { DatosUsuario } from '../generales/datos-usuario';
+import { UsuarioAuth } from '../modelos/usuario-auth.model';
 import { Usuario } from '../modelos/usuario.model';
 import { Autenticacion } from '../seguridad/autenticacion';
+import { UsuarioAuthService } from '../servicios/usuario-auth.service';
 import { UsuarioService } from '../servicios/usuario.service';
 
 @Component({
@@ -21,12 +23,14 @@ export class IniciarSesionComponent implements OnInit {
   nomUsuario: string;
   contrasena: string;
   cargando: boolean = false;
-
+  token: boolean = false;
+  
   constructor(
     public dialog: MatDialog,
     private router: Router,
     private usuarioService: UsuarioService,
-    private datosUsuario: DatosUsuario,
+    private usuarioAuthService: UsuarioAuthService,
+    private usuarioAuth: UsuarioAuth,
     private auth: Autenticacion) {
   }
 
@@ -37,6 +41,21 @@ export class IniciarSesionComponent implements OnInit {
 
   ngOnInit(): void {
     this.usuario = new Usuario();
+    this.autenticar();
+  }
+
+  async autenticar() {
+    this.usuarioAuth.UserName = "504040231";
+    this.usuarioAuth.Password = "migracion"
+    this.usuarioAuthService.autenticar(this.usuarioAuth)
+      .subscribe((res: any) => {
+        console.log('token');
+        localStorage.setItem('token', res);
+        this.token = true;
+      },
+        error => {
+          console.log('Se produjo un error mientras se intentaba autenticar.' + error);
+        });
   }
 
   async iniciarSesion() {

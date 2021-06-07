@@ -19,7 +19,10 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { ReporteComponent } from './reporte/reporte.component';
 import { AgregarComponent } from './movimiento/agregar/agregar.component';
-import { MovimientoComponent } from './movimiento/movimiento.component';
+import { MovimientoComponent } from './movimiento/Consultar/movimiento.component';
+import { SexoPipe } from './pipes/sexo.pipe';
+import { PuestoMigratorioPipe } from './pipes/puesto-migratorio.pipe';
+import { TipoPasajeroPipe } from './pipes/tipo-pasajero.pipe';
 
 const appRoutes: Routes = [
   { path: '', component: InicioComponent }
@@ -35,7 +38,10 @@ const appRoutes: Routes = [
     CerrarSesionComponent,
     ReporteComponent,
     AgregarComponent,
-    MovimientoComponent
+    MovimientoComponent,
+    SexoPipe,
+    PuestoMigratorioPipe,
+    TipoPasajeroPipe
   ],
   imports: [
     MaterialModule,

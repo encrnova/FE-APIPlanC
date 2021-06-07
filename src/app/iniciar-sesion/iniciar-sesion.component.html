@@ -1,41 +1,49 @@
 <div class="contenido">
   <mat-card>
-    <form [formGroup]="formulario">
-      <img src="assets/imagenes/logo.jpg"><br /><br />
-      <mat-card-title>Bienvenido API Plan C</mat-card-title>
-      <br /><br />
-      <mat-card-subtitle><b>Inicio de Sesión</b></mat-card-subtitle>
-      <mat-card-content>
-        <div class="form">
-          <mat-form-field>
-            <mat-label>Usuario</mat-label>
-            <input matInput formControlName="nomUsuario" [(ngModel)]="nomUsuario" required>
-            <mat-icon matSuffix>person</mat-icon>
-            <mat-error *ngIf="formulario.controls['nomUsuario'].hasError('required')">Campo requerido</mat-error>
-          </mat-form-field>
-        </div>
-
-        <div class="form">
-          <mat-form-field>
-            <mat-label>Contraseña</mat-label>
-            <input matInput [type]="ocultar ? 'password' : 'text'" formControlName="contrasena" [(ngModel)]="contrasena"
-              (keyup.enter)="iniciarSesion()" required>
-            <button mat-icon-button matSuffix (mousedown)="ocultar = !ocultar" [attr.aria-label]="'Ocultar contraseña'"
-              [attr.aria-pressed]="ocultar">
-              <mat-icon>{{ocultar ? 'visibility_off' : 'visibility'}}</mat-icon>
-            </button>
-            <mat-error *ngIf="formulario.controls['contrasena'].hasError('required')">Campo requerido</mat-error>
-          </mat-form-field>
-        </div>
+    <img src="assets/imagenes/logo.jpg"><br /><br />
+    <mat-card-title>Bienvenido API Plan C</mat-card-title>
+    <br /><br />
+    <div style="display: flex; justify-content: center;" *ngIf="!token">
+      <mat-card-content style="text-align: center;">
+        <mat-spinner *ngIf="!token"></mat-spinner>
       </mat-card-content>
+    </div>
 
-      <mat-card-actions>
-        <mat-progress-bar mode="indeterminate" *ngIf="cargando"></mat-progress-bar>
-        <br />
-        <button mat-raised-button class="btnPrincipal" (click)="iniciarSesion()" [disabled]="!formulario.valid">
-          Iniciar Sesión
-        </button>
-      </mat-card-actions>
-    </form>
+    <div *ngIf="token">
+      <form [formGroup]="formulario">
+        <mat-card-subtitle><b>Inicio de Sesión</b></mat-card-subtitle>
+        <mat-card-content>
+          <div class="form">
+            <mat-form-field>
+              <mat-label>Usuario</mat-label>
+              <input matInput formControlName="nomUsuario" [(ngModel)]="nomUsuario" required>
+              <mat-icon matSuffix>person</mat-icon>
+              <mat-error *ngIf="formulario.controls['nomUsuario'].hasError('required')">Campo requerido</mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="form">
+            <mat-form-field>
+              <mat-label>Contraseña</mat-label>
+              <input matInput [type]="ocultar ? 'password' : 'text'" formControlName="contrasena"
+                [(ngModel)]="contrasena" (keyup.enter)="iniciarSesion()" required>
+              <button mat-icon-button matSuffix (mousedown)="ocultar = !ocultar"
+                [attr.aria-label]="'Ocultar contraseña'" [attr.aria-pressed]="ocultar">
+                <mat-icon>{{ocultar ? 'visibility_off' : 'visibility'}}</mat-icon>
+              </button>
+              <mat-error *ngIf="formulario.controls['contrasena'].hasError('required')">Campo requerido</mat-error>
+            </mat-form-field>
+          </div>
+        </mat-card-content>
+
+        <mat-card-actions>
+          <mat-progress-bar mode="indeterminate" *ngIf="cargando"></mat-progress-bar>
+          <br />
+          <button mat-raised-button class="btnPrincipal" (click)="iniciarSesion()" [disabled]="!formulario.valid">
+            Iniciar Sesión
+          </button>
+        </mat-card-actions>
+      </form>
+    </div>
   </mat-card>
 </div>
