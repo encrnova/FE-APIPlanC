@@ -2,6 +2,7 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { Movimiento } from '../modelos/movimiento.model';
+import { Solicitud } from '../modelos/solicitud.model';
 import { ConexionWebapiService } from './conexion-webapi.service';
 
 @Injectable({
@@ -21,9 +22,14 @@ export class MovimientoService {
     return this.http.get<Movimiento[]>(this.url);
   }
 
-  obtenerPorFiltro(mov: Movimiento): Observable<Movimiento[]> {
+  obtenerPorMov(mov: Movimiento): Observable<Movimiento[]> {
     let json = JSON.stringify(mov);
-    return this.http.post<Movimiento[]>(this.url + '/Filtro', json, { headers: this.headers })
+    return this.http.post<Movimiento[]>(this.url + '/xMovimiento', json, { headers: this.headers })
+  }
+
+  obtenerPorFecha(sol: Solicitud): Observable<Solicitud[]> {
+    let json = JSON.stringify(sol);
+    return this.http.post<Solicitud[]>(this.url + '/xFecha', json, { headers: this.headers })
   }
 
   insertar(usuario: string, mov: Movimiento) {

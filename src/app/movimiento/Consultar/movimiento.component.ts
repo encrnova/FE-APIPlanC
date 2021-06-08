@@ -12,6 +12,8 @@ import { Time } from '@angular/common';
 import { Pais } from '../../modelos/pais.model';
 import { AgregarComponent } from '../agregar/agregar.component';
 import { CatalogoService } from 'src/app/servicios/catalogo.service';
+import { MovimientoService } from 'src/app/servicios/movimiento.service';
+import { Movimiento } from 'src/app/modelos/movimiento.model';
 
 @Component({
   selector: 'movimiento',
@@ -26,24 +28,30 @@ export class MovimientoComponent implements OnInit {
   contador: any;
   hayDatos: boolean = true;
   cargando: boolean = true;
-  fechaMinima: Date;
+  fechaMinima: Date = new Date();
+  fechaMaxima: Date = new Date(this.fechaMinima.getFullYear(), this.fechaMinima.getMonth(), this.fechaMinima.getDate() + 1);
   listaPais: Pais[];
   fechaA: Date;
   hora: Time;
   puesto: string;
-  tipo: string;
-  paises: string;
+  tipoPas: string;
+  procedencia: string;
   codigo: string;
+  idTransporte: number;
+  nomTransporte: string;
+  desTransporte: string;
+  resultado: boolean = false;
+  validos: boolean = false;
+  movimiento: Movimiento;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
-    private paginacion: MatPaginatorIntl,
     public dialog: MatDialog,
-    private dateAdapter: DateAdapter<Date>,
     private auth: Autenticacion,
     private datosUsuario: DatosUsuario,
     public catalogoService: CatalogoService,
+    public movService: MovimientoService,
     private pag: Paginacion) {
     this.pag.textoPaginacion();
   }
@@ -52,16 +60,38 @@ export class MovimientoComponent implements OnInit {
     fechaA: new FormControl(),
     hora: new FormControl(),
     puesto: new FormControl(),
-    tipo: new FormControl(),
-    paises: new FormControl(),
-    codigo: new FormControl()
+    tipoPas: new FormControl(),
+    procedencia: new FormControl(),
+    codigo: new FormControl(),
+    nomTransporte: new FormControl(),
+    desTransporte: new FormControl(),
+
   });
 
   ngOnInit(): void {
+    this.movimiento = new Movimiento();
+
     this.catalogoService.obtenerPaises()
-    .subscribe(res => { 
-      this.listaPais = res;
-    });
+      .subscribe(res => {
+        this.listaPais = res;
+      });
+  }
+
+  buscarTransporte(codigo: string) {
+    this.catalogoService.obtenerTransportes(codigo)
+      .subscribe(res => {
+        this.idTransporte = res.TRA_ID_TRANSPORTE;
+        this.nomTransporte = res.EMP_NOMBRE;
+        this.desTransporte = res.TRA_NOMBRE_TRANSPORTE;
+        this.resultado = true;
+      },
+        error => {
+          if (error.status === 0 || error.status === 401) {
+            this.auth.autenticacion().then(() => { this.buscarTransporte(codigo); });
+          }
+          else
+            console.log('Se produjo un error.' + error);
+        });
   }
 
   consultar() {
@@ -70,38 +100,44 @@ export class MovimientoComponent implements OnInit {
 
   cargarTabla() {
     this.mostrarTabla = true;
-    this.cargando = false;
     this.hayDatos = true;
-    // this.horarioDetalleService.detallePorHorario(this.data.id)
-    //   .subscribe(res => {
-    //     this.cargando = false;
-    //     this.datos.data = res;
-    //     this.contador = res;
-    //     if (this.contador.length == 0) {
-    //       this.hayDatos = false;
-    //     }
-    //     else
-    //       this.hayDatos = true;
-    //   },
-    //     error => {
-    //       this.cargando = false;
-    //       if (error.status === 0 || error.status === 401) {
-    //         this.auth.autenticacion().then(() => { this.cargarTabla(); });
-    //       }
-    //       else
-    //         console.log('Se produjo un error mientras se intentaba recuperar el detalle de horario.' + error);
-    //     });
+    this.movService.obtenerPorMov(this.movimiento)
+      .subscribe(res => {
+        this.cargando = false;
+        this.datos.data = res;
+        this.datos.paginator = this.paginator;
+        this.contador = res;
+        if (this.contador.length == 0) {
+          this.hayDatos = false;
+        }
+        else
+          this.hayDatos = true;
+      },
+        error => {
+          this.cargando = false;
+          if (error.status === 0 || error.status === 401) {
+            this.auth.autenticacion().then(() => { this.cargarTabla(); });
+          }
+          else
+            console.log('Se produjo un error mientras se intentaba recuperar el detalle de horario.' + error);
+        });
   }
 
-  agregarMovimiento(idPuesto: number, fecha: Date, idTransporte: number, procedencia: string, tipoPasajero: string) {
-    this.dialog.open(AgregarComponent, {
+  agregarMovimiento() {
+    this.validos = true;
+    const ventana = this.dialog.open(AgregarComponent, {
       width: '900px',
       disableClose: true,
-      data: { idPuesto: idPuesto, fecha: fecha, idTransporte: idTransporte, procedencia: procedencia, tipoPasajero: tipoPasajero }
+      data: { idPuesto: this.puesto, fecha: this.fechaA, idTransporte: this.idTransporte, procedencia: this.procedencia, tipoPasajero: this.tipoPas }
     });
+    ventana.afterClosed()
+      .subscribe(res => {
+        this.cargarTabla();
+      });
   }
 
   cancelar() {
+    this.validos = false;
     this.formulario.reset();
     this.mostrarTabla = false;
   }

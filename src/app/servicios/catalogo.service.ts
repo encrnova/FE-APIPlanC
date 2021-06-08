@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Pais } from '../modelos/pais.model';
+import { Transporte } from '../modelos/transporte.model';
 import { ConexionWebapiService } from './conexion-webapi.service';
 
 @Injectable({
@@ -16,6 +17,10 @@ export class CatalogoService {
 
   obtenerPaises(): Observable<Pais[]> {
     return this.http.get<Pais[]>(this.url + "/Nacionalidad");
+  }
+
+  obtenerTransportes(codigo: string): Observable<Transporte> {
+    return this.http.get<Transporte>(this.url + '/Transporte/' + codigo);
   }
 
 }

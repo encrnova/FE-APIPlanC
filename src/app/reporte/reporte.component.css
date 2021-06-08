@@ -49,16 +49,18 @@ table {
   width: 20%;
 }
 
-.mat-column-documento,
-.mat-column-sede {
-  width: 10%;
-}
-
-.mat-column-fechaS,
-.mat-column-fechaC,
-.mat-column-hora {
+.mat-column-detalle {
   width: 10%;
   text-align: center;
+}
+
+.mat-column-fechaMov,
+.mat-column-puesto,
+.mat-column-tipoPas,
+.mat-column-empresa,
+.mat-column-transporte,
+.mat-column-procedencia {
+  width: 10%;
 }
 
 .mat-column-estado {
