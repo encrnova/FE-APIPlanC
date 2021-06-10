@@ -24,20 +24,16 @@ export class MovimientoService {
 
   obtenerPorMov(mov: Movimiento): Observable<Movimiento[]> {
     let json = JSON.stringify(mov);
-    console.log(json);
     return this.http.post<Movimiento[]>(this.url + '/xMovimiento', json, { headers: this.headers })
   }
 
   obtenerPorFecha(sol: Solicitud, usuario: string): Observable<Solicitud[]> {
     let json = JSON.stringify(sol);
-    console.log(json);
-    console.log(this.url + '/xFecha/' + usuario);
     return this.http.post<Solicitud[]>(this.url + '/xFecha/' + usuario, json, { headers: this.headers })
   }
 
   insertar(usuario: string, mov: Movimiento) {
     let json = JSON.stringify(mov);
-    console.log(json);
     return this.http.post(this.url + '/' + usuario, json, { headers: this.headers })
   }
 

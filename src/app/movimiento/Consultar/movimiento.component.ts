@@ -128,7 +128,6 @@ export class MovimientoComponent implements OnInit {
 
   cargarTabla() {
     this.fechaHora = this.datePipe.transform(this.fechaA, 'yyyy-dd-MM') + " " + this.hora + ":00.000";
-    console.log('la fecha ' + this.fechaHora)
     this.mostrarTabla = true;
     this.hayDatos = true;
     this.movimiento.TRA_MOV_FECHA_MOVIMIENTO = this.fechaHora;

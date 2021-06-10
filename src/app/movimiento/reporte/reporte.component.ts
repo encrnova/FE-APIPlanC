@@ -76,7 +76,6 @@ export class ReporteComponent implements OnInit {
   cargarPorFecha() {
     this.solicitud.FECHA_INICIO = this.datePipe.transform(this.rangoFecha.get('inicio').value, 'yyyy-dd-MM') + ' 00:00:00.000';
     this.solicitud.FECHA_FINAL = this.datePipe.transform(this.rangoFecha.get('fin').value, 'yyyy-dd-MM') + ' 23:59:59.000';
-    console.log(this.solicitud.FECHA_INICIO);
     this.cargarTabla(this.solicitud);
   }
 
