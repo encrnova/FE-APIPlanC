@@ -3,7 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { ErrorComponent } from './error/error.component';
 import { IniciarSesionComponent } from './iniciar-sesion/iniciar-sesion.component';
 import { InicioComponent } from './inicio/inicio.component';
-import { ReporteComponent } from './reporte/reporte.component';
+import { ReporteComponent } from './movimiento/reporte/reporte.component';
 import { AuthGuard } from './seguridad/auth.guard';
 
 const routes: Routes = [

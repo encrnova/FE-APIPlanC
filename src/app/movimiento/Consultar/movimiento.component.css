@@ -30,13 +30,10 @@
   .mat-column-fechaNac,
   .mat-column-nombre,
   .mat-column-apellido1,
-  .mat-column-apellido2 {
+  .mat-column-apellido2,
+  .mat-column-sexo,
+  .mat-column-informacion {
     width: 10%;
-    text-align: center;
-  }
-
-  .mat-column-sexo {
-    width: 5%;
     text-align: center;
   }
   

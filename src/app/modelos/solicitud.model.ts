@@ -1,4 +1,4 @@
 export class Solicitud {
-    FECHA_INICIO: Date;
-    FECHA_FINAL: Date;
+    FECHA_INICIO: string;
+    FECHA_FINAL: string;
 }

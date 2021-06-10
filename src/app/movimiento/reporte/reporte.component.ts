@@ -9,14 +9,16 @@ import { Autenticacion } from 'src/app/seguridad/autenticacion';
 import { Router } from '@angular/router';
 import { DatosUsuario } from 'src/app/generales/datos-usuario';
 import { UsuarioAuthService } from 'src/app/servicios/usuario-auth.service';
-import { Solicitud } from '../modelos/solicitud.model';
-import { MovimientoService } from '../servicios/movimiento.service';
+import { Solicitud } from '../../modelos/solicitud.model';
+import { MovimientoService } from '../../servicios/movimiento.service';
 import { animate, state, style, transition, trigger } from '@angular/animations';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-reporte',
   templateUrl: './reporte.component.html',
   styleUrls: ['./reporte.component.css'],
+  providers: [DatePipe],
   animations: [
     trigger('detailExpand', [
       state('collapsed', style({ height: '0px', minHeight: '0' })),
@@ -46,6 +48,7 @@ export class ReporteComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
+    private datePipe: DatePipe,
     private router: Router,
     public acceso: Accesibilidad,
     private catalogoService: CatalogoService,
@@ -71,18 +74,23 @@ export class ReporteComponent implements OnInit {
   }
 
   cargarPorFecha() {
-    this.solicitud.FECHA_INICIO = this.rangoFecha.get('inicio').value;
-    this.solicitud.FECHA_FINAL = this.rangoFecha.get('fin').value;
+    this.solicitud.FECHA_INICIO = this.datePipe.transform(this.rangoFecha.get('inicio').value, 'yyyy-dd-MM') + ' 00:00:00.000';
+    this.solicitud.FECHA_FINAL = this.datePipe.transform(this.rangoFecha.get('fin').value, 'yyyy-dd-MM') + ' 23:59:59.000';
+    console.log(this.solicitud.FECHA_INICIO);
     this.cargarTabla(this.solicitud);
   }
 
   cargarTabla(solicitud: Solicitud) {
-    this.movService.obtenerPorFecha(this.solicitud)
+    this.movService.obtenerPorFecha(this.solicitud, this.datosUsuario.usuarioId)
       .subscribe(res => {
         this.verTbl = true;
         this.cargando = false;
         this.datos.data = res;
-        this.datos.paginator = this.paginator;
+        if (this.paginator == undefined) {
+          this.cargarTabla(this.solicitud);
+        } else {
+          this.datos.paginator = this.paginator;
+        }
         this.contador = res;
         ('cargar' + this.contador);
         if (this.contador.length == 0) {
@@ -95,7 +103,7 @@ export class ReporteComponent implements OnInit {
             this.auth.autenticacion().then(() => { this.cargarTabla(solicitud); });
           }
           else
-            console.log('Se produjo un error mientras se intentaba recuperar citas' + error);
+            console.log('Se produjo un error mientras se intentaba recuperar movimientos' + error);
         });
   }
 

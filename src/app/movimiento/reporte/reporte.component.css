@@ -49,17 +49,17 @@ table {
   width: 20%;
 }
 
-.mat-column-detalle {
+.mat-column-detalle,
+.mat-column-transporte,
+.mat-column-procedencia,
+.mat-column-tipoPas,
+.mat-column-empresa {
   width: 10%;
   text-align: center;
 }
 
 .mat-column-fechaMov,
-.mat-column-puesto,
-.mat-column-tipoPas,
-.mat-column-empresa,
-.mat-column-transporte,
-.mat-column-procedencia {
+.mat-column-puesto {
   width: 10%;
 }
 

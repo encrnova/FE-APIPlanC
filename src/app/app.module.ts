@@ -17,7 +17,7 @@ import { MaterialModule } from './material.module';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
-import { ReporteComponent } from './reporte/reporte.component';
+import { ReporteComponent } from './movimiento/reporte/reporte.component';
 import { AgregarComponent } from './movimiento/agregar/agregar.component';
 import { MovimientoComponent } from './movimiento/Consultar/movimiento.component';
 import { SexoPipe } from './pipes/sexo.pipe';

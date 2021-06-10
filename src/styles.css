@@ -65,16 +65,16 @@ button[type="submit"] {
 
 .btnCerrar {
   float: right;
-  top:-24px;
-  right:-24px;
+  top: -24px;
+  right: -24px;
 }
 
 .no-resultados {
-  display: flex; 
-  justify-content: center; 
-  text-align: center; 
-  flex-direction: column; 
-  color: black; 
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  flex-direction: column;
+  color: black;
   background-color: #dae3eb;
   margin-top: 20px;
   margin-bottom: 20px;
@@ -96,6 +96,12 @@ button[type="submit"] {
   background-color: #dae3eb;
 }
 
-.mat-progress-spinner circle, .mat-spinner circle {
+.mat-progress-spinner circle,
+.mat-spinner circle {
   stroke: #00618b;
 }
+
+.swal2-styled.swal2-confirm {
+  background-color: #00618b !important;
+}
+

@@ -31,6 +31,7 @@ export class AgregarComponent implements OnInit {
   nacionalidad: string;
   sexo: string;
   movimiento: Movimiento;
+  fecha: Date;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -52,9 +53,9 @@ export class AgregarComponent implements OnInit {
   ngOnInit(): void {
     this.movimiento = new Movimiento();
     this.catalogoService.obtenerPaises()
-    .subscribe(res => { 
-      this.listaPais = res;
-    });
+      .subscribe(res => {
+        this.listaPais = res;
+      });
   }
 
   guardar() {
@@ -70,24 +71,36 @@ export class AgregarComponent implements OnInit {
     this.movimiento.TRA_MOV_SEGUNDO_APELLIDO = this.apellido2;
     this.movimiento.TRA_MOV_SEXO = this.sexo;
     this.movimiento.TRA_MOV_TIPO_PASAJERO = this.data.tipoPasajero;
-    console.log(this.movimiento);
-    // this.movService.insertar(this.datosUsuario.usuarioId, this.movimiento)
-    //   .subscribe(res => {
-    //     Swal.fire({
-    //       position: 'top-end',
-    //       icon: 'success',
-    //       title: 'Movimiento insertado exitosamente.',
-    //       showConfirmButton: false,
-    //       timer: 2000
-    //     });
-    //     this.dialogRef.close(null);
-    //   },
-    //     error => {
-    //       Swal.fire(
-    //         'Error',
-    //         error.error.Message,
-    //         'error')
-    //     });
+    this.movService.insertar(this.datosUsuario.usuarioId, this.movimiento)
+      .subscribe(res => {
+
+        Swal.fire({
+          icon: 'warning',
+          title: 'Agregar Pasajero',
+          text: '¿Está seguro que desea agregar al pasajero?',
+          footer: 'Verifique que los datos son correctos, ya que una vez confirmada la acción no puede realizar modificaciones del registro.',
+          showCancelButton: true,
+          confirmButtonText: 'Si',
+          cancelButtonText: 'No'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            Swal.fire({
+              position: 'top-end',
+              icon: 'success',
+              title: 'Registro insertado exitosamente.',
+              showConfirmButton: false,
+              timer: 2000
+            });
+            this.dialogRef.close(null);
+          }
+        });
+      },
+        error => {
+          Swal.fire(
+            'Error',
+            error.error.Message,
+            'error')
+        });
   }
 
   cancelar() {

@@ -8,21 +8,23 @@ import { DatosUsuario } from 'src/app/generales/datos-usuario';
 import { Autenticacion } from 'src/app/seguridad/autenticacion';
 import { MatDatepicker } from '@angular/material/datepicker';
 import { Paginacion } from 'src/app/generales/paginacion';
-import { Time } from '@angular/common';
+import { DatePipe, Time } from '@angular/common';
 import { Pais } from '../../modelos/pais.model';
 import { AgregarComponent } from '../agregar/agregar.component';
 import { CatalogoService } from 'src/app/servicios/catalogo.service';
 import { MovimientoService } from 'src/app/servicios/movimiento.service';
 import { Movimiento } from 'src/app/modelos/movimiento.model';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'movimiento',
   templateUrl: './movimiento.component.html',
-  styleUrls: ['./movimiento.component.css']
+  styleUrls: ['./movimiento.component.css'],
+  providers: [DatePipe]
 })
 
 export class MovimientoComponent implements OnInit {
-  columnas = ['documento', 'nacionalidad', 'fechaNac', 'nombre', 'apellido1', 'apellido2', 'sexo'];
+  columnas = ['documento', 'nacionalidad', 'fechaNac', 'nombre', 'apellido1', 'apellido2', 'sexo', 'informacion'];
   datos = new MatTableDataSource();
   mostrarTabla = false;
   contador: any;
@@ -32,8 +34,8 @@ export class MovimientoComponent implements OnInit {
   fechaMaxima: Date = new Date(this.fechaMinima.getFullYear(), this.fechaMinima.getMonth(), this.fechaMinima.getDate() + 1);
   listaPais: Pais[];
   fechaA: Date;
-  hora: Time;
-  puesto: string;
+  hora: string;
+  puesto: number;
   tipoPas: string;
   procedencia: string;
   codigo: string;
@@ -43,10 +45,13 @@ export class MovimientoComponent implements OnInit {
   resultado: boolean = false;
   validos: boolean = false;
   movimiento: Movimiento;
+  fechaHora: string;
+  camposComp: boolean = false;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
+    private datePipe: DatePipe,
     public dialog: MatDialog,
     private auth: Autenticacion,
     private datosUsuario: DatosUsuario,
@@ -77,9 +82,24 @@ export class MovimientoComponent implements OnInit {
       });
   }
 
+  cambioCodigo(valor: string): void {
+    this.resultado = false;
+    this.nomTransporte = '';
+    this.desTransporte = '';
+    this.camposComp = false;
+  }
+
+  verInfo() {
+    Swal.fire(
+      'Advertencia',
+      'No se puede realizar ninguna acción sobre estos registros, en caso de requerir ayuda debería comunicarse con migración.',
+      'warning')
+  }
+
   buscarTransporte(codigo: string) {
     this.catalogoService.obtenerTransportes(codigo)
       .subscribe(res => {
+        this.camposComp = true;
         this.idTransporte = res.TRA_ID_TRANSPORTE;
         this.nomTransporte = res.EMP_NOMBRE;
         this.desTransporte = res.TRA_NOMBRE_TRANSPORTE;
@@ -87,7 +107,15 @@ export class MovimientoComponent implements OnInit {
       },
         error => {
           if (error.status === 0 || error.status === 401) {
+            this.camposComp = false;
             this.auth.autenticacion().then(() => { this.buscarTransporte(codigo); });
+          }
+          if (error.status === 404) {
+            this.camposComp = false;
+            Swal.fire(
+              'Advertencia',
+              error.error,
+              'warning')
           }
           else
             console.log('Se produjo un error.' + error);
@@ -99,8 +127,15 @@ export class MovimientoComponent implements OnInit {
   }
 
   cargarTabla() {
+    this.fechaHora = this.datePipe.transform(this.fechaA, 'yyyy-dd-MM') + " " + this.hora + ":00.000";
+    console.log('la fecha ' + this.fechaHora)
     this.mostrarTabla = true;
     this.hayDatos = true;
+    this.movimiento.TRA_MOV_FECHA_MOVIMIENTO = this.fechaHora;
+    this.movimiento.PUE_ID_PUESTO_MIGRATORIO = this.puesto;
+    this.movimiento.TRA_MOV_TIPO_PASAJERO = this.tipoPas;
+    this.movimiento.NAC_ID_DEST_PROC = this.procedencia;
+    this.movimiento.TRA_ID_TRANSPORTE = this.idTransporte;
     this.movService.obtenerPorMov(this.movimiento)
       .subscribe(res => {
         this.cargando = false;
@@ -124,11 +159,12 @@ export class MovimientoComponent implements OnInit {
   }
 
   agregarMovimiento() {
+    this.fechaHora = this.datePipe.transform(this.fechaA, 'yyyy-dd-MM') + " " + this.hora;
     this.validos = true;
     const ventana = this.dialog.open(AgregarComponent, {
       width: '900px',
       disableClose: true,
-      data: { idPuesto: this.puesto, fecha: this.fechaA, idTransporte: this.idTransporte, procedencia: this.procedencia, tipoPasajero: this.tipoPas }
+      data: { idPuesto: this.puesto, fecha: this.fechaHora, idTransporte: this.idTransporte, procedencia: this.procedencia, tipoPasajero: this.tipoPas }
     });
     ventana.afterClosed()
       .subscribe(res => {
@@ -138,6 +174,8 @@ export class MovimientoComponent implements OnInit {
 
   cancelar() {
     this.validos = false;
+    this.resultado = false;
+    this.hayDatos = true;
     this.formulario.reset();
     this.mostrarTabla = false;
   }

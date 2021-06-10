@@ -2,10 +2,10 @@
   <br />
   <h1 class="titulo"> Movimientos aéreos </h1>
 
-  <p style="margin-left: 25px;"><b>Filtro de búsqueda</b></p>
+  <p style="margin-left: 25px;">Para cargar registros seleccione un rango de fecha y presione buscar.</p>
   <div class="divBtnPrincipal">
     <div style="float:left">
-      <mat-form-field class="filtro" style="margin-left: 25px;">
+      <mat-form-field class="filtro" appearance="outline" style="margin-left: 25px;">
         <mat-label>Rango de fecha</mat-label>
         <mat-date-range-input [formGroup]="rangoFecha" [rangePicker]="picker">
           <input matStartDate formControlName="inicio" #rf>
@@ -17,25 +17,22 @@
         <mat-error *ngIf="rangoFecha.controls.fin.hasError('matEndDateInvalid')">Fecha invalida</mat-error>
       </mat-form-field>
 
-      <button *ngIf="rf.value?.length > 0" mat-icon-button matTooltip="Cancelar filtro" matTooltipPosition="above"
-        (click)="noFecha()">
+      <button *ngIf="rf.value?.length > 0" mat-icon-button matTooltip="Cancelar filtro" style="bottom: 5px;"
+        matTooltipPosition="above" (click)="noFecha()">
         <mat-icon>clear</mat-icon>
       </button>
 
-      <button mat-icon-button matTooltip="Ver por rango de fecha seleccionada" matTooltipPosition="right"
-        (click)="cargarPorFecha()">
-        <mat-icon>refresh</mat-icon>
-      </button>
+      <button mat-raised-button class="btnPrincipal" style="bottom: 5px;" (click)="cargarPorFecha()">Buscar</button>
 
     </div>
   </div>
-  <br />
+  <br /><br />
 
   <div *ngIf="hayDatos">
     <div *ngIf="verTbl" class="contenido">
       <button style="float: right" mat-raised-button class="btnPrincipal"
-        (click)="exporter.exportTable('xlsx', {fileName:'ReporteCitas'})">
-        Exportar a Excel
+        (click)="exporter.exportTable('xlxs', {fileName:'Reporte'})">
+        Exportar
       </button>
       <br /><br /><br />
 
@@ -88,11 +85,11 @@
                 <div class="example-element-description">
                   <b>Documento:</b> {{element.TRA_MOV_DOCUMENTO}}
                   <span style="margin-left: 20px;"></span>
-                  <b>Nombre:</b> {{element.TRA_MOV_NOMBRE}}
+                  <b>Nombre:</b> {{element.TRA_MOV_NOMBRE_COMPLETO}}
                   <span style="margin-left: 20px;"></span>
                   <b>Nacionalidad:</b> {{element.NAC_ID}}
                   <span style="margin-left: 20px;"></span>
-                  <b>Fecha nacimiento:</b> {{element.TRA_MOV_FECHA_NACIMIENTO}}
+                  <b>Fecha nacimiento:</b> {{element.TRA_MOV_FECHA_NACIMIENTO | date: 'dd-MM-yyyy'}}
                   <span style="margin-left: 20px;"></span>
                   <b>Sexo:</b> {{element.TRA_MOV_SEXO | sexo}}
                 </div>
