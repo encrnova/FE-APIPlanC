@@ -1,5 +1,5 @@
 import Swal from 'sweetalert2';
-import { Time } from '@angular/common';
+import { DatePipe, Time } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { DateAdapter } from '@angular/material/core';
@@ -16,7 +16,8 @@ import { CatalogoService } from 'src/app/servicios/catalogo.service';
 @Component({
   selector: 'app-agregar',
   templateUrl: './agregar.component.html',
-  styleUrls: ['./agregar.component.css']
+  styleUrls: ['./agregar.component.css'],
+  providers: [DatePipe]
 })
 
 export class AgregarComponent implements OnInit {
@@ -35,6 +36,7 @@ export class AgregarComponent implements OnInit {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
+    private datePipe: DatePipe,
     public dialogRef: MatDialogRef<AgregarComponent>,
     private datosUsuario: DatosUsuario,
     private movService: MovimientoService,
@@ -59,13 +61,13 @@ export class AgregarComponent implements OnInit {
   }
 
   guardar() {
-    this.movimiento.TRA_MOV_DOCUMENTO = this.documento;
-    this.movimiento.NAC_ID = this.nacionalidad;
-    this.movimiento.TRA_MOV_FECHA_NACIMIENTO = this.fechaNac;
     this.movimiento.PUE_ID_PUESTO_MIGRATORIO = this.data.idPuesto;
     this.movimiento.TRA_MOV_FECHA_MOVIMIENTO = this.data.fecha;
     this.movimiento.TRA_ID_TRANSPORTE = this.data.idTransporte;
     this.movimiento.NAC_ID_DEST_PROC = this.data.procedencia;
+    this.movimiento.TRA_MOV_DOCUMENTO = this.documento;
+    this.movimiento.NAC_ID = this.nacionalidad;
+    this.movimiento.TRA_MOV_FECHA_NACIMIENTO = this.fechaNac;
     this.movimiento.TRA_MOV_NOMBRE = this.nombre;
     this.movimiento.TRA_MOV_PRIMER_APELLIDO = this.apellido1;
     this.movimiento.TRA_MOV_SEGUNDO_APELLIDO = this.apellido2;

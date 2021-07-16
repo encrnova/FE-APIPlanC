@@ -20,7 +20,8 @@ export class CatalogoService {
   }
 
   obtenerTransportes(codigo: string): Observable<Transporte> {
-    return this.http.get<Transporte>(this.url + '/Transporte/' + codigo);
+    console.log(this.url + '/Transporte?codigo=' + codigo)
+    return this.http.get<Transporte>(this.url + '/Transporte?codigo=' + codigo);
   }
 
 }

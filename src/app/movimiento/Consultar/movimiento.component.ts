@@ -33,7 +33,7 @@ export class MovimientoComponent implements OnInit {
   fechaMinima: Date = new Date();
   fechaMaxima: Date = new Date(this.fechaMinima.getFullYear(), this.fechaMinima.getMonth(), this.fechaMinima.getDate() + 1);
   listaPais: Pais[];
-  fechaA: Date;
+  fechaA: string;
   hora: string;
   puesto: number;
   tipoPas: string;
@@ -99,6 +99,7 @@ export class MovimientoComponent implements OnInit {
   buscarTransporte(codigo: string) {
     this.catalogoService.obtenerTransportes(codigo)
       .subscribe(res => {
+        console.log(res)
         this.camposComp = true;
         this.idTransporte = res.TRA_ID_TRANSPORTE;
         this.nomTransporte = res.EMP_NOMBRE;
@@ -158,7 +159,8 @@ export class MovimientoComponent implements OnInit {
   }
 
   agregarMovimiento() {
-    this.fechaHora = this.datePipe.transform(this.fechaA, 'yyyy-dd-MM') + " " + this.hora;
+    this.fechaHora =  this.datePipe.transform(this.fechaA, 'yyyy-MM-dd') + " " + this.hora;
+    console.log('seTeaDa fecha y hora '+this.fechaHora)
     this.validos = true;
     const ventana = this.dialog.open(AgregarComponent, {
       width: '900px',
