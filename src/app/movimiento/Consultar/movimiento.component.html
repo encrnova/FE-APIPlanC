@@ -137,8 +137,8 @@
       <tr mat-row *matRowDef="let row; columns: columnas;"></tr>
 
       <tr class="mat-row" *matNoDataRow>
-        <td *ngIf="!cargando" class="mat-cell" colspan="7">No hay datos</td>
-        <td *ngIf="cargando" colspan="7">
+        <td *ngIf="!cargando" class="mat-cell" colspan="8">No hay datos</td>
+        <td *ngIf="cargando" colspan="8">
           <mat-card *ngIf="cargando" style="display: flex; justify-content: center; align-items: center">
             <mat-progress-spinner color="primary" mode="indeterminate"></mat-progress-spinner>
           </mat-card>

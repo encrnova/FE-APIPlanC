@@ -2,7 +2,7 @@
   <br />
   <h1 class="titulo"> Movimientos aéreos </h1>
 
-  <p style="margin-left: 25px;">Para cargar registros seleccione un rango de fecha y presione buscar.</p>
+  <p style="margin-left: 25px;">Para cargar registros seleccione un rango de fecha y presione buscar. Solamente se visualizan los registros de los últimos 3 meses.</p>
   <div class="divBtnPrincipal">
     <div style="float:left">
       <mat-form-field class="filtro" appearance="outline" style="margin-left: 25px;">
@@ -85,7 +85,7 @@
                 <div class="example-element-description">
                   <b>Documento:</b> {{element.TRA_MOV_DOCUMENTO}}
                   <span style="margin-left: 20px;"></span>
-                  <b>Nombre:</b> {{element.TRA_MOV_NOMBRE_COMPLETO}}
+                  <b>Nombre:</b> {{element.TRA_MOV_NOMBRE}} {{element.TRA_MOV_PRIMER_APELLIDO}} {{element.TRA_MOV_SEGUNDO_APELLIDO}}
                   <span style="margin-left: 20px;"></span>
                   <b>Nacionalidad:</b> {{element.NAC_ID}}
                   <span style="margin-left: 20px;"></span>
