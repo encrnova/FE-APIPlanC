@@ -18,8 +18,8 @@ export class Autenticacion {
     }
 
     async autenticacion() {
-        this.usuarioAuth.UserName = "504040231";
-        this.usuarioAuth.Password = "migracion"
+        this.usuarioAuth.UserName = "apiplanc";
+        this.usuarioAuth.Password = "123456"
 
         this.usuarioAuthService.autenticar(this.usuarioAuth)
             .subscribe((res: any) => {

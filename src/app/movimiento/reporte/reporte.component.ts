@@ -13,6 +13,7 @@ import { Solicitud } from '../../modelos/solicitud.model';
 import { MovimientoService } from '../../servicios/movimiento.service';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { DatePipe } from '@angular/common';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-reporte',
@@ -44,6 +45,7 @@ export class ReporteComponent implements OnInit {
   estadoCita = '';
   creacion: Date;
   verTbl: boolean = false;
+  cargandotbl: boolean = false;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -74,6 +76,7 @@ export class ReporteComponent implements OnInit {
   }
 
   cargarPorFecha() {
+    this.cargandotbl = true;
     this.solicitud.FECHA_INICIO = this.datePipe.transform(this.rangoFecha.get('inicio').value, 'yyyy-MM-dd') + ' 00:00:00.000';
     this.solicitud.FECHA_FINAL = this.datePipe.transform(this.rangoFecha.get('fin').value, 'yyyy-MM-dd') + ' 23:59:59.000';
     this.cargarTabla(this.solicitud);
@@ -82,6 +85,7 @@ export class ReporteComponent implements OnInit {
   cargarTabla(solicitud: Solicitud) {
     this.movService.obtenerPorFecha(this.solicitud, this.datosUsuario.usuarioId)
       .subscribe(res => {
+        this.cargandotbl = false;
         this.verTbl = true;
         this.cargando = false;
         this.datos.data = res;
@@ -101,6 +105,14 @@ export class ReporteComponent implements OnInit {
           if (error.status === 0 || error.status === 401) {
             this.auth.autenticacion().then(() => { this.cargarTabla(solicitud); });
           }
+          if (error.status === 404) {
+            this.cargandotbl = false;
+            Swal.fire(
+              'Atención',
+              'No se encontraron registros con las fechas indicadas.',
+              'info')
+              this.limpiar();
+          }
           else
             console.log('Se produjo un error mientras se intentaba recuperar movimientos' + error);
         });
@@ -109,6 +121,10 @@ export class ReporteComponent implements OnInit {
   noFecha() {
     this.rangoFecha.reset();
     window.location.reload();
+  }
+
+  limpiar() {
+    this.verTbl = false;
   }
 
 }
